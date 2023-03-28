@@ -31,3 +31,18 @@ CP=`mvn dependency:build-classpath -Dmdep.outputFile=/dev/stdout -q`
 java -cp $CP:./target/spring-data-test-1.0-SNAPSHOT.jar -Dtest.serverType=onprem -Dtest.endpoint=http://localhost:8080  com.example.App 
 ```
 
+
+### Building the spring-data-oracle-nosql from GitHub
+
+git clone https://github.com/oracle/nosql-spring-sdk.git  --branch "feature/composite-key"
+cd nosql-spring-sdk/
+mvn package -DskipTests=true
+
+
+
+mvn install:install-file \
+-DpomFile=pom.xml \
+-Dfile=target/spring-data-oracle-nosql-1.5.0.jar \
+-Dsources=target/spring-data-oracle-nosql-1.5.0-sources.jar \
+-Djavadoc=target/spring-data-oracle-nosql-1.5.0-javadoc.jar
+

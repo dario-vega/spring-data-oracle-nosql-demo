@@ -6,7 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.oracle.nosql.spring.data.core.mapping.NosqlId;
+import com.oracle.nosql.spring.data.core.mapping.NosqlTable;
+
+
 public class Machine {
+    @NosqlId	
     MachineId machineId;
 
     private String name;

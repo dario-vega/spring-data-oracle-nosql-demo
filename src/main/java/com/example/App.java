@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootApplication
 // If Spring Data Framework doesn't automatically find the repository beam class
@@ -25,6 +26,8 @@ public class App implements CommandLineRunner
 {
     @Autowired
     private CustomerRepository repo;
+    @Autowired
+    private MachineRepo machineRepo;
 
     public static void main( String[] args )
     {
@@ -75,12 +78,6 @@ public class App implements CommandLineRunner
     }
 
     public void runMachine() {
-        NosqlDbFactory nosqlDbFactory = new NosqlDbFactory(
-            AppConfig.nosqlDBConfig );
-        NoSQLHandle client = nosqlDbFactory.getNosqlClient();
-        MachineRepo machineRepo = new MachineRepoImpl(client, AppConfig.nosqlDBConfig );
-        // Not automatically managed
-        machineRepo.createTable();
 
         machineRepo.deleteAll();
         System.out.println("count: " + machineRepo.count());
@@ -136,19 +133,19 @@ public class App implements CommandLineRunner
         machineId.setName("name 1");
         machineId.setVersion("version 1");
 
-        Machine machine = machineRepo.findById(machineId);
+        Machine machine = machineRepo.findById(machineId).orElse(null);
         System.out.println("findById: " + machine.toString() );
         Assert.assertNotNull(machine);
         Assert.assertEquals("d 1 1", machine.getName());
 
         machineRepo.delete(machine);
 
-        Machine machine2 = machineRepo.findById(machineId);
+        Machine machine2 = machineRepo.findById(machineId).orElse(null);
         Assert.assertNull(machine2);
 
         machineId.setName("name 3");
         machineRepo.deleteById(machineId);
-        Machine machine3 = machineRepo.findById(machineId);
+        Machine machine3 = machineRepo.findById(machineId).orElse(null);
         Assert.assertNull(machine3);
 
         Iterable<Machine> all = machineRepo.findAll();
@@ -165,7 +162,7 @@ public class App implements CommandLineRunner
         Assert.assertEquals(manualCount, repoCount);
         System.out.println("count: " + repoCount);
 
-
+/*
         Iterable<Machine> findByMachineIdNameRegexpIgnoreCaseQuery =
             machineRepo.findByMachineIdNameRegexpIgnoreCase("NaMe 2");
 
@@ -173,7 +170,7 @@ public class App implements CommandLineRunner
             System.out.println("findByMachineIdNameRegexpIgnoreCaseQuery: " +
                 c.toString() );
         }
-
+*/
 
         List<Sort.Order> sortList = new ArrayList<>();
         sortList.add(new Sort.Order(Sort.Direction.DESC, "version"));
