@@ -162,7 +162,7 @@ public class App implements CommandLineRunner
         Assert.assertEquals(manualCount, repoCount);
         System.out.println("count: " + repoCount);
 
-/*
+
         Iterable<Machine> findByMachineIdNameRegexpIgnoreCaseQuery =
             machineRepo.findByMachineIdNameRegexpIgnoreCase("NaMe 2");
 
@@ -170,7 +170,6 @@ public class App implements CommandLineRunner
             System.out.println("findByMachineIdNameRegexpIgnoreCaseQuery: " +
                 c.toString() );
         }
-*/
 
         List<Sort.Order> sortList = new ArrayList<>();
         sortList.add(new Sort.Order(Sort.Direction.DESC, "version"));

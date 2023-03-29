@@ -11,6 +11,9 @@ import java.util.List;
 
 public interface MachineRepo extends NosqlRepository<Machine, MachineId> {
 
-//    Iterable<Machine> findByMachineIdNameRegexpIgnoreCase(String name);
+    @Query("declare $p_name String; " +
+        "SELECT * FROM Machine as t " +
+        "WHERE  regex_like(t.name,  $p_name, 'i') ")
+    Iterable<Machine> findByMachineIdNameRegexpIgnoreCase(@Param("$p_name") String name);
     Page<Machine> findAllByMachineIdName(String name, Pageable pageable);
 }
